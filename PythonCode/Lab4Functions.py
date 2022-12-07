@@ -39,8 +39,7 @@ def import_data(name,separator):
     column_names = [
       'rechts',
       'links',
-      't',  
-    ]
+      't']
     # Creating an empty Dataframe with column names only
     emg_raw= pd.DataFrame(columns=column_names)
 

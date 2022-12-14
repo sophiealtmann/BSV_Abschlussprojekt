@@ -27,8 +27,64 @@ import csv
 #                 "links",
 #                 "t"])
 
-verena_data= l4f.import_data('verena',';')   
-plt.plot(verena_data.t,verena_data.links,label='links')
-plt.plot(verena_data.t,verena_data.rechts,label='rechts')
-plt.legend(loc="best",frameon=True)
+verena_data= l4f.import_data('verena',';')  
+
+# fig, (ax1, ax2) = plt.subplots(1,2)
+# ax1.plot(verena_data.t,verena_data.left)
+# ax2.plot(verena_data.t,verena_data.right)
+# plt.show()
+
+# plt.plot(verena_data.t,verena_data.left,label='left')
+# plt.plot(verena_data.t,verena_data.right,label='right')
+# plt.legend(loc="best",frameon=True)
+# plt.show()
+ 
+david_data= l4f.import_data('david',';')  
+
+# fig, (ax1, ax2) = plt.subplots(1,2)
+# ax1.plot(david_data.t,david_data.left)
+# ax2.plot(david_data.t,david_data.right)
+# plt.show()
+
+# plt.plot(david_data.t,david_data.left,label='left')
+# plt.plot(david_data.t,david_data.right,label='right')
+# plt.legend(loc="best",frameon=True)
+# plt.show()
+
+v_elmoffset = l4f.eliminateoffset(verena_data)
+d_elmoffset = l4f.eliminateoffset(david_data)
+
+v_filtered=l4f.filter(v_elmoffset)
+d_filtered=l4f.filter(d_elmoffset)
+
+v_rect= l4f.rectify(v_filtered)
+d_rect= l4f.rectify(d_filtered)
+
+v_env=l4f.envelope(v_rect,3)
+d_env=l4f.envelope(d_rect,3)
+
+# fig, axs = plt.subplots(5,2)
+# axs[0,0].plot(verena_data.t,verena_data.right)
+# axs[0,1].plot(verena_data.t,verena_data.left)
+# axs[1,0].plot(verena_data.t,v_elmoffset.right)
+# axs[1,1].plot(verena_data.t,v_elmoffset.left)
+# axs[2,0].plot(verena_data.t,v_filtered.right)
+# axs[2,1].plot(verena_data.t,v_filtered.left)
+# axs[3,0].plot(verena_data.t,v_rect.right)
+# axs[3,1].plot(verena_data.t,v_rect.left)
+# axs[4,0].plot(verena_data.t,v_env.right)
+# axs[4,1].plot(verena_data.t,v_env.left)
+# plt.show()
+
+fig, axs = plt.subplots(5,2)
+axs[0,0].plot(david_data.t,david_data.right)
+axs[0,1].plot(david_data.t,david_data.left)
+axs[1,0].plot(david_data.t,d_elmoffset.right)
+axs[1,1].plot(david_data.t,d_elmoffset.left)
+axs[2,0].plot(david_data.t,d_filtered.right)
+axs[2,1].plot(david_data.t,d_filtered.left)
+axs[3,0].plot(david_data.t,d_rect.right)
+axs[3,1].plot(david_data.t,d_rect.left)
+axs[4,0].plot(david_data.t,d_env.right)
+axs[4,1].plot(david_data.t,d_env.left)
 plt.show()

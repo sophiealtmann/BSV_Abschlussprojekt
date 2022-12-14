@@ -43,7 +43,7 @@ def import_data(name,separator):
     # Creating an empty Dataframe with column names only
 
     emg_raw = pd.DataFrame(columns=column_names)
-    
+
     for i in range(5):
         # create string for path
         emg_string = './Data/' + str(name) + str(i+1) + '.txt'
@@ -52,7 +52,7 @@ def import_data(name,separator):
         emg_raw = emg_raw.append(pd.read_csv(
             emg_string,
              sep=separator, names=column_names, skiprows= 50,
-             skipfooter = 50
+             skipfooter = 50, engine='python'
             ))
 
     # timing needs changing as the appended data starts from 0 again
@@ -122,9 +122,12 @@ def rectify(emg_filtered):
 
 """
 This funtion creates the enveloping function of the EMG-Data. Therefore the rectified is filtered with a lowpass filter. 
-It creates a new DataFrame which includes the columns right and left. The input has to be a Dataframe including the columns right and left.
+It creates a new DataFrame which includes the columns right and left. The input emg_rect has to be a Dataframe including the columns right and left.
+In order to create an enveloping function the Cutoff-Frequency should be about 3 Hz.
+Input: emg_rect(df), co_freq(int)
+Output: emg_env(df)
 """
-def envelope( emg_rect, co_freq):
+def envelope(emg_rect, co_freq):
     b, a = signal.butter(4, co_freq/500 , "low", analog=False )
     emgr_env= signal.filtfilt(b, a , emg_rect.right)
     emgl_env= signal.filtfilt(b, a , emg_rect.left)

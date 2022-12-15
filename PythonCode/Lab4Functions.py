@@ -134,3 +134,59 @@ def envelope(emg_rect, co_freq):
 
     emg_env=pd.DataFrame({'right':emgr_env,'left':emgl_env})
     return emg_env
+
+""" This function makes you choose beginning and end of a muscle activation with a plot by clicking.
+    It is specifically made for the three BPK409 datasets (weights, mvc, fatigue)
+    Input: mvc_emg_filtered, weights_emg_filtered, fatigue_emg_filtered
+    Output: the 3 starts of the 3 mvc bursts, 3 ends of mvc burts, and same for weights fatigue
+    mvc_start, mvc_end, weights_start, weights_end, fatigue_start, fatigue_end
+   """
+def get_bursts(emg_filtered):   
+    def get_individual_burst(x):
+        def tellme(s):
+            print(s)
+            plt.title(s, fontsize=16)
+            plt.draw()
+            
+        plt.clf()
+        plt.setp(plt.gca(), autoscale_on=True)
+        plt.plot(x)
+       
+        tellme('Click once to start zoom') 
+        plt.waitforbuttonpress()
+        
+        while True:
+            tellme('Select two corners of zoom, enter/return key to finish')
+            pts = plt.ginput(2, timeout=-1)
+            if len(pts) < 2:
+                break
+            (x0, y0), (x1, y1) = pts
+            xmin, xmax = sorted([x0, x1])
+            ymin, ymax = sorted([y0, y1])
+            plt.xlim(xmin, xmax)
+            plt.ylim(ymin, ymax)
+          
+            
+        tellme('Choose start of activity')    
+        s = plt.ginput(1)
+        tellme('Choose end of activity')   
+        e = plt.ginput(1)
+        s1 = s[0]
+        e1 = e[0]
+        start = int(s1[0].astype(int))
+        end = int(e1[0].astype(int))
+        plt.show()
+        
+        return start,end
+    number_bursts = 5
+    bursts_start = np.empty(number_bursts)
+    bursts_end = np.empty(number_bursts)
+    for i in range(number_bursts):
+        bursts_start[i], bursts_end[i] = get_individual_burst(emg_filtered)
+   
+       
+    bursts_start = bursts_start.astype(int)
+    bursts_end = bursts_end.astype(int)
+    
+    
+    return bursts_start, bursts_end

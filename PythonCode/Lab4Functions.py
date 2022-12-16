@@ -1,6 +1,7 @@
 import numpy as np
 from scipy import fftpack
 from scipy import signal
+import scipy
 import matplotlib.pyplot as plt
 import pandas as pd
 
@@ -190,3 +191,78 @@ def get_bursts(emg_filtered):
     
     
     return bursts_start, bursts_end
+
+"""
+This function gets the indices of the starts and ends of 3 0.5 sec sequencies in every burst of an EMG Data.
+Those indices can be used to isolate the sequencies of the EMG-Data afterwards. 
+Input:burst_start(array),burst_end(array),time(arraylike)
+Output: index_s(array), index_e(array)
+"""
+def getindexforiso(burst_start,burst_end,time):
+    start_s = np.zeros(len(burst_start))
+    middle_s = np.zeros(len(burst_start))
+    end_s = np.zeros(len(burst_start))
+
+    start_e = np.zeros(len(burst_start))
+    middle_e = np.zeros(len(burst_start))
+    end_e = np.zeros(len(burst_start))
+
+    for i in range(len(burst_start)):
+        start_s[i]= time[burst_start[i]]+500
+        tmp = burst_start[i]+((burst_end[i]-burst_start[i])/2)
+        middle_s[i] = time[int(tmp)]
+        end_s[i] = time[burst_end[i]]-1500
+        start_e[i] = start_s[i]+500
+        middle_e[i] = middle_s[i]+500
+        end_e[i]= end_s[i]+500
+    
+    five_starts=[]
+    five_ends=[]
+    for j in range(len(burst_start)):
+        five_starts.append(start_s[j])
+        five_starts.append(middle_s[j])
+        five_starts.append(end_s[j])
+        five_ends.append(start_e[j])
+        five_ends.append(middle_e[j])
+        five_ends.append(end_e[j])
+
+    five_starts= np.array(five_starts)
+    five_ends= np.array(five_ends)
+
+    index_s = np.zeros(len(five_starts))
+    index_e = np.zeros(len(five_ends))
+    
+    for n in range(len(five_starts)):
+        index_s[n] = np.argmin(np.abs(time-five_starts[n]))
+        index_e[n] = np.argmin(np.abs(time-five_ends[n]))
+    
+    index_s = np.array(index_s,dtype= int)
+    index_e = np.array(index_e,dtype= int)
+    
+    return index_s,index_e
+
+def getmedian(index_s,index_e,emg_filtered):
+    def get_power(data, sfreq):
+        sig_fft = fftpack.fft(data)
+    
+        # And the power (sig_fft is of complex dtype)
+        power = np.abs(sig_fft)
+    
+        # The corresponding frequencies
+        sample_freq1 = fftpack.fftfreq(data.size, d=1/sfreq)
+        frequencies = sample_freq1[sample_freq1 > 0]
+        power = power[sample_freq1 > 0]
+        return power, frequencies
+    def getmedian(power,frequencies):
+        area_freq= scipy.integrate.cumtrapz(power,frequencies, initial=0)
+        total_power=area_freq[-1]
+        median_freq= frequencies[np.where(area_freq >= total_power/2)[0][0]]
+        return median_freq
+
+    median_freqs=np.zeros(len(index_s))
+    sampling=1000
+    for i in range (len(index_s)):
+        pwr,freq= get_power(emg_filtered[index_s[i]:index_e[i]],sampling)
+        median_freqs[i]=getmedian(pwr,freq)
+
+    return median_freqs

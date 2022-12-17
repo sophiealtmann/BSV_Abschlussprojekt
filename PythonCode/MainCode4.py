@@ -1,8 +1,5 @@
 import numpy as np
-from scipy import fftpack
-from scipy import signal
 import matplotlib.pyplot as plt
-import pandas as pd
 import Lab4Functions as l4f
 import csv
 
@@ -10,6 +7,7 @@ import csv
 Dieser Code dient zur Analyse der im Dead Hang Experiment aufgenommenen Daten. Die Validierung unseres Systems,
 sowie das Erstellen aller Plots wurde einmal durchgeführt und danach auskommentiert. 
 Das auskommentieren der Plots dient zur einfacheren Weiterverarbeitung. 
+Damit der Code funktioniert muss die Datei Lab4Functoins im selben ordner sein. 
 """
 
 #Validierung unseres Mess-Systems

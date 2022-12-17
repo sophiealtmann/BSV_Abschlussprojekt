@@ -240,29 +240,58 @@ def getindexforiso(burst_start,burst_end,time):
     index_e = np.array(index_e,dtype= int)
     
     return index_s,index_e
+    
+"""
+This function was given for Lab 3. 
+The function does an FFT and returns the power spectrum of data
+Input: Data, sampling frequency
+Output: Power, the respective frequencies of the power spectrum
+"""
+def get_power(data, sfreq):
+    sig_fft = fftpack.fft(data)
+    
+    # And the power (sig_fft is of complex dtype)
+    power = np.abs(sig_fft)
+    
+    # The corresponding frequencies
+    sample_freq1 = fftpack.fftfreq(data.size, d=1/sfreq)
+    frequencies = sample_freq1[sample_freq1 > 0]
+    power = power[sample_freq1 > 0]
+    return power, frequencies
 
+"""
+This function filters the power spectrum. 
+Input: power(array)
+Output: power_filtered(array)
+"""
+def freqfilt(power):
+    b, a = signal.butter(4, 40/500 , "low", analog=False )
+    power_filtered= signal.filtfilt(b, a , power)
+    return power_filtered
+
+"""
+This function get the medianfrequency for a individual power spectrum. 
+Input: power(array), frequencies(array)
+Output: median_freq(float)
+"""
+def get_indivmedian(power,frequencies):
+    area_freq= scipy.integrate.cumtrapz(power,frequencies, initial=0)
+    total_power=area_freq[-1]
+    median_freq= frequencies[np.where(area_freq >= total_power/2)[0][0]]
+    return median_freq
+
+"""
+This function gets the median frequency of the filtered EMG-Data with 5 Bursts. It returns a array with the 15 medianfrequencies. 
+The data is split into 3 0.5s timeslots per burst, one at the beginning, one in th middle and one at the end of each burst. 
+Input: index_s(array,len 15), index_e(array, len 15), emg_filtered(arraylike)
+Output: median_freq(array)
+"""
 def getmedian(index_s,index_e,emg_filtered):
-    def get_power(data, sfreq):
-        sig_fft = fftpack.fft(data)
     
-        # And the power (sig_fft is of complex dtype)
-        power = np.abs(sig_fft)
-    
-        # The corresponding frequencies
-        sample_freq1 = fftpack.fftfreq(data.size, d=1/sfreq)
-        frequencies = sample_freq1[sample_freq1 > 0]
-        power = power[sample_freq1 > 0]
-        return power, frequencies
-    def getmedian(power,frequencies):
-        area_freq= scipy.integrate.cumtrapz(power,frequencies, initial=0)
-        total_power=area_freq[-1]
-        median_freq= frequencies[np.where(area_freq >= total_power/2)[0][0]]
-        return median_freq
-
     median_freqs=np.zeros(len(index_s))
     sampling=1000
     for i in range (len(index_s)):
         pwr,freq= get_power(emg_filtered[index_s[i]:index_e[i]],sampling)
-        median_freqs[i]=getmedian(pwr,freq)
+        median_freqs[i]=get_indivmedian(pwr,freq)
 
     return median_freqs

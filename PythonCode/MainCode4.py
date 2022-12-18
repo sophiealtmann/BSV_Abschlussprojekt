@@ -53,25 +53,27 @@ d_env=l4f.envelope(d_rect,3)
 
 # fig, axs = plt.subplots(5,2)
 # axs[0,0].plot(verena_data.t/1000,verena_data.right)
-# axs[0,0].set_ylabel('Voltage /mV')
 # axs[0,0].set_title('Right')
 # axs[0,1].plot(verena_data.t/1000,verena_data.left)
 # axs[0,1].set_title('Left')
 # axs[1,0].plot(verena_data.t/1000,v_elmoffset.right)
-# axs[1,0].set_ylabel('Voltage /mV')
 # axs[1,1].plot(verena_data.t/1000,v_elmoffset.left)
 # axs[2,0].plot(verena_data.t/1000,v_filtered.right)
 # axs[2,0].set_ylabel('Voltage /mV')
 # axs[2,1].plot(verena_data.t/1000,v_filtered.left)
 # axs[3,0].plot(verena_data.t/1000,v_rect.right)
-# axs[3,0].set_ylabel('Voltage /mV')
 # axs[3,1].plot(verena_data.t/1000,v_rect.left)
 # axs[4,0].plot(verena_data.t/1000,v_env.right)
-# axs[4,0].set_ylabel('Voltage /mV')
 # axs[4,0].set_xlabel('Time /s')
 # axs[4,1].plot(verena_data.t/1000,v_env.left)
 # axs[4,1].set_xlabel('Time /s')
 # fig.align_ylabels(axs) 
+# plt.subplots_adjust(left=0.125,
+#                     bottom=0.1, 
+#                     right=0.9, 
+#                     top=0.9, 
+#                     wspace=0.2, 
+#                     hspace=0.35)
 # plt.savefig('./Plots/vorverarbeitung.svg')
 # plt.show()
 
@@ -113,31 +115,38 @@ for i in range(5):
    dmean_right.append(np.mean(d_env.right[dbursts_start[i]:dbursts_end[i]]))
    dmean_left.append(np.mean(d_env.left[dbursts_start[i]:dbursts_end[i]]))
 
+v_meanoverall_r= np.mean(vmean_right)
+v_meanoverall_l= np.mean(vmean_left)
+d_meanoverall_r= np.mean(dmean_right)
+d_meanoverall_l= np.mean(dmean_left)
+
+v_mean= (v_meanoverall_r+v_meanoverall_l)/2
+d_mean= (d_meanoverall_r+d_meanoverall_l)/2
 bursts=[1,2,3,4,5]
 
 
 
-# plt.scatter(bursts,vmean_right,marker='*')
-# plt.plot(bursts,vmean_right,label='right')
-# plt.scatter(bursts,vmean_left,marker='*')
-# plt.plot(bursts,vmean_left,label='left')
-# plt.xticks(bursts)
-# plt.xlabel('Burst')
-# plt.ylabel('Musclecontraction /Nm')
-# plt.legend(loc='best',frameon=True)
-# plt.savefig('./Plots/verena_aktivität.svg')
-# plt.show()
+plt.scatter(bursts,(vmean_right/v_mean)*100,marker='*')
+plt.plot(bursts,(vmean_right/v_mean)*100,label='right')
+plt.scatter(bursts,(vmean_left/v_mean)*100,marker='*')
+plt.plot(bursts,(vmean_left/v_mean)*100,label='left')
+plt.xticks(bursts)
+plt.xlabel('Burst')
+plt.ylabel('Musclecontraction /% of average')
+plt.legend(loc='best',frameon=True)
+plt.savefig('./Plots/verena_aktivität.svg')
+plt.show()
 
-# plt.scatter(bursts,dmean_right,marker='*')
-# plt.plot(bursts,dmean_right,label='right')
-# plt.scatter(bursts,dmean_left,marker='*')
-# plt.plot(bursts,dmean_left,label='left')
-# plt.xticks(bursts)
-# plt.xlabel('Burst')
-# plt.ylabel('Musclecontraction /Nm')
-# plt.legend(loc='best',frameon=True)
-# plt.savefig('./Plots/david_aktivität.svg')
-# plt.show()
+plt.scatter(bursts,(dmean_right/d_mean)*100,marker='*')
+plt.plot(bursts,(dmean_right/d_mean)*100,label='right')
+plt.scatter(bursts,(dmean_left/d_mean)*100,marker='*')
+plt.plot(bursts,(dmean_left/d_mean)*100,label='left')
+plt.xticks(bursts)
+plt.xlabel('Burst')
+plt.ylabel('Musclecontraction /% of average')
+plt.legend(loc='best',frameon=True)
+plt.savefig('./Plots/david_aktivität.svg')
+plt.show()
 
 
 vindex_s, vindex_e = l4f.getindexforiso(vbursts_start,vbursts_end,verena_data.t)

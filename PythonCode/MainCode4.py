@@ -147,14 +147,14 @@ v_mean= (v_meanoverall_r+v_meanoverall_l)/2
 d_mean= (d_meanoverall_r+d_meanoverall_l)/2
 bursts=[1,2,3,4,5]
  
-# mean_values=[['Proband','Links / mV','Rechts / mV','Global / mV'],  
-#         ['1 - Rechtshaender',v_meanoverall_l,v_meanoverall_r,v_mean],                                   
-#         ['2 - Linkshaender',d_meanoverall_l, d_meanoverall_r, d_mean]]
-# with open('./Plots/mean_contraction.csv','w') as file: 
-#     writer=csv.writer(file)
-#     for row in mean_values:
-#         writer.writerow(row)
-#     file.close()
+mean_values=[['Proband','Links / mV','Rechts / mV','Global / mV'],  
+        ['1 - Rechtshaender',round(v_meanoverall_l,2),round(v_meanoverall_r,2),round(v_mean,2)],                                   
+        ['2 - Linkshaender',round(d_meanoverall_l,2), round(d_meanoverall_r,2), round( d_mean,2)]]
+with open('./Plots/mean_contraction.csv','w') as file: 
+    writer=csv.writer(file)
+    for row in mean_values:
+        writer.writerow(row)
+    file.close()
 
 
 # plt.scatter(bursts,(vmean_right/v_mean)*100,marker='*')

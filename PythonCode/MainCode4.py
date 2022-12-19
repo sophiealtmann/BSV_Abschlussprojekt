@@ -125,6 +125,22 @@ vbursts_end = [11777,22163,32263,40556,48638]
 dbursts_start = [1048,19325,32549,43313,52553]
 dbursts_end = [17209,30266,41206,50635,59900]
 
+# Berechnung der Dauer der Übungen
+v_duration=[]
+d_duration=[]
+for x in range(5):
+   v_duration.append((verena_data.t[vbursts_end[x]]-verena_data.t[vbursts_start[x]])/1000)
+   d_duration.append((david_data.t[dbursts_end[x]]-david_data.t[dbursts_start[x]])/1000)
+
+mean_values=[['Proband','1.Runde Dauer / s','2.Runde Dauer / s','3.Runde Dauer / s','4.Runde Dauer / s','5.Runde Dauer / s'],  
+        ['1 - Rechtshaender',int(v_duration[0]),int(v_duration[1]),int(v_duration[2]),int(v_duration[3]),int(v_duration[4])],                                   
+        ['2 - Linkshaender',int(d_duration[0]),int(d_duration[1]),int(d_duration[2]),int(d_duration[3]),int(d_duration[4])]]
+with open('./Plots/duration.csv','w') as file: 
+    writer=csv.writer(file)
+    for row in mean_values:
+        writer.writerow(row)
+    file.close()
+
 # Berechnung der mittleren Muskelkontraktion während eines Bursts.
 
 vmean_right=[]
@@ -158,9 +174,9 @@ bursts=[1,2,3,4,5]
 
 
 # plt.scatter(bursts,(vmean_right/v_mean)*100,marker='*')
-# plt.plot(bursts,(vmean_right/v_mean)*100,label='right')
+# plt.plot(bursts,(vmean_right/v_mean)*100,label='Right')
 # plt.scatter(bursts,(vmean_left/v_mean)*100,marker='*')
-# plt.plot(bursts,(vmean_left/v_mean)*100,label='left')
+# plt.plot(bursts,(vmean_left/v_mean)*100,label='Left')
 # plt.xticks(bursts)
 # plt.xlabel('Burst')
 # plt.ylabel('Musclecontraction / % of average')

@@ -132,14 +132,14 @@ for x in range(5):
    v_duration.append((verena_data.t[vbursts_end[x]]-verena_data.t[vbursts_start[x]])/1000)
    d_duration.append((david_data.t[dbursts_end[x]]-david_data.t[dbursts_start[x]])/1000)
 
-mean_values=[['Proband','1.Runde Dauer / s','2.Runde Dauer / s','3.Runde Dauer / s','4.Runde Dauer / s','5.Runde Dauer / s'],  
-        ['1 - Rechtshaender',int(v_duration[0]),int(v_duration[1]),int(v_duration[2]),int(v_duration[3]),int(v_duration[4])],                                   
-        ['2 - Linkshaender',int(d_duration[0]),int(d_duration[1]),int(d_duration[2]),int(d_duration[3]),int(d_duration[4])]]
-with open('./Plots/duration.csv','w') as file: 
-    writer=csv.writer(file)
-    for row in mean_values:
-        writer.writerow(row)
-    file.close()
+# duration_values=[['Proband','1.Runde Dauer / s','2.Runde Dauer / s','3.Runde Dauer / s','4.Runde Dauer / s','5.Runde Dauer / s'],  
+#         ['1 - Rechtshaender',int(v_duration[0]),int(v_duration[1]),int(v_duration[2]),int(v_duration[3]),int(v_duration[4])],                                   
+#         ['2 - Linkshaender',int(d_duration[0]),int(d_duration[1]),int(d_duration[2]),int(d_duration[3]),int(d_duration[4])]]
+# with open('./Plots/duration.csv','w') as file: 
+#     writer=csv.writer(file)
+#     for row in duration_values:
+#         writer.writerow(row)
+#     file.close()
 
 # Berechnung der mittleren Muskelkontraktion während eines Bursts.
 

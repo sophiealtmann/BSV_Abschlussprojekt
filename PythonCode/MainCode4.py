@@ -19,15 +19,16 @@ Damit der Code funktioniert muss die Datei Lab4Functoins im selben ordner sein.
 #                 names=["links","rechts",
 #                 "t"])
 
-# rechts= pd.read_csv('./Data/validierung_rechts.txt',  
-#                 header=None,
-#                 names=[ "rechts",
-#                 "t"])
+# rechts= pd.read_csv('./Data/validierung_rechts.txt',
+#                   sep=";",
+#                   header=None,
+#                   names=[ "rechts",
+#                   "t"])
 # links= pd.read_csv('./Data/validierung_links.txt',   
-#                 sep=';',
-#                 header=None,
-#                 names=[ "links",
-#                 "t"])
+#                   sep=';',
+#                   header=None,
+#                   names=[ "links",
+#                   "t"])
 
 # plt.plot(data.t/1000, data.links, label="Left")
 # plt.plot(data.t/1000, data.rechts, label="Right")
@@ -38,8 +39,10 @@ Damit der Code funktioniert muss die Datei Lab4Functoins im selben ordner sein.
 # plt.show()
 
 # fig, (ax1, ax2) = plt.subplots(1,2)
-# ax1.plot(data.t/1000, data.links, label="Left")
-# ax2.plot(rechts.t/1000, rechts.rechts,'tab:orange')
+# ax1.plot(links.t/1000, links.links,)
+# ax2.plot(rechts.t/1000, rechts.rechts,color='orange')
+# ax1.set_ylim([1350,1650])
+# ax2.set_ylim([1350,1650])
 # ax1.set_xlabel('Time / s')
 # ax2.set_xlabel('Time / s')
 # ax1.set_ylabel('Voltage / mV')
@@ -280,8 +283,9 @@ median_time=['start','middle','end']
 # ax2.scatter(median_time,vlburst5_median,marker='*')
 # ax2.plot(median_time,vlburst5_median,label="5th cycle")
 # ax2.set_xlabel('Time within one repetition')
-# ax2.legend(loc='best',frameon=True)
 # ax2.set_title('Left')
+# ax1.set_ylim([100,240])
+# ax2.set_ylim([100,240])
 # plt.savefig('./Plots/verena_mediane.svg')
 # plt.show()
 
@@ -312,6 +316,8 @@ median_time=['start','middle','end']
 # ax2.plot(median_time,dlburst5_median,label="5th cycle")
 # ax2.set_xlabel('Time within one repetition')
 # ax2.legend(loc='best',frameon=True)
+# ax1.set_ylim([90,200])
+# ax2.set_ylim([90,200])
 # ax2.set_title('Left')
 # plt.savefig('./Plots/david_mediane.svg')
 # plt.show()

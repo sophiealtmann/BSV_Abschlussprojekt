@@ -132,6 +132,8 @@ for x in range(5):
    v_duration.append((verena_data.t[vbursts_end[x]]-verena_data.t[vbursts_start[x]])/1000)
    d_duration.append((david_data.t[dbursts_end[x]]-david_data.t[dbursts_start[x]])/1000)
 
+bursts=[1,2,3,4,5]
+
 # duration_values=[['Proband','1.Runde Dauer / s','2.Runde Dauer / s','3.Runde Dauer / s','4.Runde Dauer / s','5.Runde Dauer / s'],  
 #         ['1 - Rechtshaender',int(v_duration[0]),int(v_duration[1]),int(v_duration[2]),int(v_duration[3]),int(v_duration[4])],                                   
 #         ['2 - Linkshaender',int(d_duration[0]),int(d_duration[1]),int(d_duration[2]),int(d_duration[3]),int(d_duration[4])]]
@@ -140,6 +142,17 @@ for x in range(5):
 #     for row in duration_values:
 #         writer.writerow(row)
 #     file.close()
+
+# plt.scatter(bursts,v_duration,marker='*')
+# plt.plot(bursts,v_duration,label='Subject 1')
+# plt.scatter(bursts,d_duration,marker='*')
+# plt.plot(bursts,d_duration,label='Subject 2')
+# plt.xticks(bursts)
+# plt.xlabel('Repetition')
+# plt.ylabel('Duration / s')
+# plt.legend(loc='best',frameon=True)
+# plt.savefig('./Plots/duration.svg')
+# plt.show()
 
 # Berechnung der mittleren Muskelkontraktion während eines Bursts.
 
@@ -161,7 +174,7 @@ d_meanoverall_l= np.mean(dmean_left)
 
 v_mean= (v_meanoverall_r+v_meanoverall_l)/2
 d_mean= (d_meanoverall_r+d_meanoverall_l)/2
-bursts=[1,2,3,4,5]
+
  
 # mean_values=[['Proband','Links / mV','Rechts / mV','Global / mV'],  
 #         ['1 - Rechtshaender',round(v_meanoverall_l,2),round(v_meanoverall_r,2),round(v_mean,2)],                                   
@@ -178,7 +191,7 @@ bursts=[1,2,3,4,5]
 # plt.scatter(bursts,(vmean_left/v_mean)*100,marker='*')
 # plt.plot(bursts,(vmean_left/v_mean)*100,label='Left')
 # plt.xticks(bursts)
-# plt.xlabel('Burst')
+# plt.xlabel('Repetition')
 # plt.ylabel('Musclecontraction / % of average')
 # plt.legend(loc='best',frameon=True)
 # plt.savefig('./Plots/verena_aktivität.svg')
@@ -189,7 +202,7 @@ bursts=[1,2,3,4,5]
 # plt.scatter(bursts,(dmean_left/d_mean)*100,marker='*')
 # plt.plot(bursts,(dmean_left/d_mean)*100,label='Left')
 # plt.xticks(bursts)
-# plt.xlabel('Burst')
+# plt.xlabel('Repetition')
 # plt.ylabel('Musclecontraction / % of average')
 # plt.legend(loc='best',frameon=True)
 # plt.savefig('./Plots/david_aktivität.svg')
@@ -252,7 +265,7 @@ median_time=['start','middle','end']
 # ax1.plot(median_time,vrburst4_median,label="4th cycle")
 # ax1.scatter(median_time,vrburst5_median,marker='*')
 # ax1.plot(median_time,vrburst5_median,label="5th cycle")
-# ax1.set_xlabel('Time within one experiment')
+# ax1.set_xlabel('Time within one repetition')
 # ax1.set_ylabel('Median Frequency / Hz')
 # ax1.legend(loc='best',frameon=True)
 # ax1.set_title('Right')
@@ -266,7 +279,7 @@ median_time=['start','middle','end']
 # ax2.plot(median_time,vlburst4_median,label="4th cycle")
 # ax2.scatter(median_time,vlburst5_median,marker='*')
 # ax2.plot(median_time,vlburst5_median,label="5th cycle")
-# ax2.set_xlabel('Time within one experiment')
+# ax2.set_xlabel('Time within one repetition')
 # ax2.legend(loc='best',frameon=True)
 # ax2.set_title('Left')
 # plt.savefig('./Plots/verena_mediane.svg')
@@ -283,7 +296,7 @@ median_time=['start','middle','end']
 # ax1.plot(median_time,drburst4_median,label="4th cycle")
 # ax1.scatter(median_time,drburst5_median,marker='*')
 # ax1.plot(median_time,drburst5_median,label="5th cycle")
-# ax1.set_xlabel('Time within one experiment')
+# ax1.set_xlabel('Time within one repetition')
 # ax1.set_ylabel('Median Frequency / Hz')
 # ax1.legend(loc='best',frameon=True)
 # ax1.set_title('Right')
@@ -297,7 +310,7 @@ median_time=['start','middle','end']
 # ax2.plot(median_time,dlburst4_median,label="4th cycle")
 # ax2.scatter(median_time,dlburst5_median,marker='*')
 # ax2.plot(median_time,dlburst5_median,label="5th cycle")
-# ax2.set_xlabel('Time within one experiment')
+# ax2.set_xlabel('Time within one repetition')
 # ax2.legend(loc='best',frameon=True)
 # ax2.set_title('Left')
 # plt.savefig('./Plots/david_mediane.svg')
